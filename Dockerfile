@@ -5,10 +5,13 @@ RUN apt-get update && apt-get install -y \
 	unixodbc \
 	unixodbc-dev \
 	curl \
-	gnupg
+	gnupg \
+	openssl \
+	libssl-dev \
+	libcurl4-openssl-dev
     
 # Install R packages
-RUN R -e "install.packages(c('tidyverse', 'shiny', 'rmarkdown', 'DT', 'formattable', 'kableExtra', 'networkD3', 'plotly', 'RODBC', 'shinydashboard', 'shinyjs', 'writexl'), repos='https://cloud.r-project.org/')"
+RUN R -e "install.packages(c('tidyverse', 'shiny', 'rmarkdown', 'DT', 'formattable', 'kableExtra', 'networkD3', 'plotly', 'RODBC', 'shinydashboard', 'shinyjs', 'writexl', 'httr'), repos='https://cloud.r-project.org/')"
 
 # Install mssql odbc drivers
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
@@ -23,4 +26,3 @@ COPY configs/odbc/odbc.ini /etc/odbc.ini
 # Copy file that contains R app network data
 # This sets shiny.port = 3838 and shiny.host = "0.0.0.0"
 COPY Rprofile.site /usr/local/lib/R/etc/
-
